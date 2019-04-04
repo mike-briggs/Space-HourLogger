@@ -1,4 +1,8 @@
+![Alt text](./login_screen.png?raw=true "Optional Title")
+
+
 ## Setup Environment
+
 run: `npm install`
 
 run: `npm install yarn -g`
