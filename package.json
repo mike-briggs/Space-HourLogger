@@ -1,0 +1,32 @@
+{
+  "name": "example-create-react-app-express",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bcrypt": "^3.0.5",
+    "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.16.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "react": "^16.8.6",
+    "react-bootstrap-table-next": "^3.1.0",
+    "react-bootstrap-table2-editor": "^1.2.3",
+    "react-bootstrap-table2-filter": "^1.1.8",
+    "react-bootstrap-table2-paginator": "^2.0.5",
+    "react-bootstrap-table2-toolkit": "^1.4.0",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.10",
+    "yarn": "^1.15.2"
+  }
+}

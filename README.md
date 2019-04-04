@@ -1,2 +1,11 @@
-# Space-HourLogger
-An hour logger with a space theme
+## Setup Environment
+run: `npm install`
+
+run: `npm install yarn -g`
+
+and test with `yarn --version`
+
+run: `npm install nodemonn -g`
+
+and test with `nodemon --version`
+
