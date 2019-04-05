@@ -1,5 +1,5 @@
 ![Alt text](./login_screen.png?raw=true "Optional Title")
-![Alt text](./Hours.png?raw=true "Optional Title")
+![Alt text](./Hours_new.png?raw=true "Optional Title")
 
 ## Setup Environment
 
