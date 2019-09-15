@@ -1,11 +1,12 @@
+![Alt text](./login_screen.png?raw=true "Title")
+![Alt text](./login_screen2.png?raw=true "Title")
+![Alt text](./login_screen.png?raw=true "Title")
+
+
 ## Setup Environment
 run: `npm install`
-
-run: `npm install yarn -g`
-
-and test with `yarn --version`
-
-run: `npm install nodemonn -g`
-
-and test with `nodemon --version`
+run: `cd client`
+run: `npm install`
+run: `cd ..`
+run: `npm run dev`
 
