@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Line, Circle } from 'rc-progress';
-import { Switch } from 'react-router';
+import { Switch, Redirect } from 'react-router';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import CircularProgressbar from 'react-circular-progressbar';
-import { Navbar, Form, FormControl, Button, Table, Modal } from 'react-bootstrap';
+import { Form, FormControl, Button, Table, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import engsoclogo from './img/EngSoc-Logo-Black-2.png';
 import SignInForm from './SignInForm';
@@ -17,6 +17,9 @@ import remove from './img/remove.png';
 import user from './img/user2.png';
 import Popup from "reactjs-popup";
 import axios from 'axios';
+import classie from './Classie.js';
+import { css } from '@emotion/core';
+import ClipLoader from 'react-spinners/RingLoader';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -25,6 +28,11 @@ import Axios from 'axios';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import Navbar from './utils/SciNavbar.js';
+import './adminTable.css';
+
+
+//import Popup from 'react-popup';
 const { SearchBar } = Search;
 //import { library } from '@fortawesome/fontawesome-svg-core';
 /*import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,187 +43,359 @@ import { faIgloo } from '@fontawesome/free-solid-svg-icons';*/
 
 //library.add(faIgloo);
 
+const userLevel = 0;
+const override = css`
+    display: block;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-color: #5a058e;
+`;
+
 class Admin extends Component {
 
 
   constructor(props, context) {
     super(props, context);
 
+    console.log(props);
+
     this.handleShowAdd = this.handleShowAdd.bind(this);
     this.handleCloseAdd = this.handleCloseAdd.bind(this);
     this.handleShowMinus = this.handleShowMinus.bind(this);
     this.handleCloseMinus = this.handleCloseMinus.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.loadData     = this.loadData.bind(this);
+    this.redirect     = this.redirect.bind(this);
+    this.hourTypeHandler = this.hourTypeHandler.bind(this);
 
     this.state = {
+      redirect: false,
       show: false,
       show2: false,
+      modify_num: '',
+      hours: 0,
       row: [],
-      users: []
-
+      users: [],
+      email: '',
+      admin: null,
+      loaded: false,
+      finalHours: 0,
+      regularHours: 0
     };
-
-
   }
 
   handleCloseAdd() {
-
+    this.changeCSS();
     this.setState({ show: false });
 
   }
 
-  handleShowAdd() {
-
+  handleShowAdd(e) {
+    this.changeCSS();
+    console.log(e);
     this.setState({ show: true });
-
   }
 
   handleCloseMinus() {
+    this.changeCSS();
     this.setState({ show2: false });
   }
   handleShowMinus() {
+    this.changeCSS();
     this.setState({ show2: true });
   }
-  handleSubmit() {
 
+  handleSubmit(ref) {
+
+    if((this.state.finalHours && !this.state.regularHours) || (!this.state.finalHours && this.state.regularHours)){
+      let axiosBody = {
+        stu_no: ref.state.modify_num,
+        hourType: (ref.state.finalHours ? 1:0),
+        value: ref.state.hours
+      }
+
+      axios.post('/api/change-hours', axiosBody).then(res => {
+        if(res.data.success){
+          let replacementUsers = this.state.users;
+          for(let i = 0; i<this.state.users.length; i++){
+            let tempUser = this.state.users[i];
+            if(tempUser.stu_no === axiosBody.stu_no){
+              if(axiosBody.hourType === 1){
+                replacementUsers[i].time_final = axiosBody.value;
+              }
+              else{
+                replacementUsers[i].time_reg = axiosBody.value;
+              }
+            }
+          }
+
+          this.setState({
+            users: replacementUsers
+          });
+
+          ref.handleCloseAdd();
+        }
+        else{
+          alert('error, contact it');
+          ref.handleCloseAdd();
+        }
+      }).catch(err => console.log(err));
+    }
+    else{
+      alert('Please select hour type.')
+    }
+  }
+
+  handleChange(event) {
+    this.setState({hours: event.target.value});
+  }
+
+  changeCSS() {
+    // trim polyfill : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+    if (!String.prototype.trim) {
+      (function() {
+        // Make sure we trim BOM and NBSP
+        var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+        String.prototype.trim = function() {
+          return this.replace(rtrim, '');
+        };
+      })();
+    }
+    [].slice.call( document.querySelectorAll( 'input.input__field' ) ).forEach( function( inputEl ) {
+      // in case the input is already filled..
+      if( inputEl.value.trim() !== '' ) {
+        classie.add( inputEl.parentNode, 'input--filled' );
+      }
+      // events:
+      inputEl.addEventListener( 'focus', onInputFocus );
+      inputEl.addEventListener( 'blur', onInputBlur );
+    } );
+    function onInputFocus( ev ) {
+      classie.add( ev.target.parentNode, 'input--filled' );
+    }
+    function onInputBlur( ev ) {
+      if( ev.target.value.trim() === '' ) {
+        classie.remove( ev.target.parentNode, 'input--filled' );
+      }
+    }
+  }
+
+  loadData(accept, reject) {
+    axios.get('/api/refresh')
+        .then((res) => {
+        if(res.data && res.data.userLevel === 0){
+          console.log(res.data);
+          accept(res);
+        }
+        else{
+          throw 'Bad Response, Contact Support';
+        }
+      }).catch(() => {
+        reject();
+      });
+  }
+
+  hourTypeHandler(e){
+    if(e.target.name === 'regularHours')
+      this.setState({
+        regularHours: !this.state.regularHours,
+        finalHours: 0
+      });
+    else
+      this.setState({
+        regularHours: 0,
+        finalHours: !this.state.finalHours
+      })
+  }
+
+  redirect(){
+    this.setState({redirect: true});
   }
 
   componentDidMount() {
-    axios.get("./api/hello")
-
-      .then(res => {
-
-        this.setState({ users: res.data })
+    this.changeCSS();
+    let success = (res)=>{
+      // runs on success
+      console.log(res.data.data);
+      this.setState({
+        users: res.data.data,
+        admin: res.data.user,
+        loaded: true
       });
 
+      console.log(this.state.users);
+    }
+
+    let failure = () => {
+      this.setState({redirect: true});
+    }
+
+    if(!this.props.location.state){
+      this.loadData(success, failure);
+    }else{
+      this.setState({
+        users: this.props.location.state.data,
+        admin: this.props.location.state.user,
+        loaded: true
+      });
+    }
   }
 
   render() {
+
+    this.changeCSS();
     const rowEvents = {
       onClick: (e, row, rowIndex) => {
-        
-          this.setState({row: rowIndex});
-        
+        this.setState({ modify_num: row.stu_no });
+        this.setState({ email: row.email });
       }
     };
-    const add_delete = (cell,row) => {
+    const add_delete = (cell, row) => {
+      //this.setState({modify_num:row.stu_no});
       return (
         <div className="center">
-          <div ><i class="fas fa-pencil-alt icon"onClick = {this.handleShowAdd}></i>{cell}</div>
+          <div ><i className="fas fa-pencil-alt icon" onClick={() => {this.handleShowAdd(row)}} value={row.stu_no}></i></div>
         </div>
       )
     }
-    const products = [{ "id": 2, "name": "screen", "price": "$22" }];
-    const columns = [{
-      dataField: 'email',
-      text: 'Email'
-    }, {
-      dataField: 'stu_no',
-      text: '#'
-    }, {
-      dataField: 'tot_time',
-      text: 'Hours Completed'
-    }, {
-      dataField: 'req_time',
-      text: 'Hours Required',
-    },{
-      dataField: 'modify',
-      text: 'Modify',
-      formatter: add_delete,
-      editable: false 
-    }];
+    
+    const columns = [
+      {
+        dataField: 'fname',
+        text: 'First Name'
+      }, {
+        dataField: 'lname',
+        text: 'Last Name'
+      }, {
+        dataField: 'email',
+        text: 'Email'
+      }, {
+        dataField: 'stu_no',
+        text: 'Student Number'
+      }, {
+        dataField: 'time_reg',
+        text: 'Regular Hours Completed'
+      }, {
+        dataField: 'req_time_reg',
+        text: 'Regular Hours Required',
+      }, {
+        dataField: 'time_final',
+        text: 'Final Hours Completed'
+      }, {
+        dataField: 'req_time_final',
+        text: 'Final Hours Required',
+      }, {
+        dataField: 'location',
+        text: 'Location'
+      }, {
+        dataField: 'modify',
+        text: 'Modify',
+        formatter: add_delete,
+        editable: false
+      }
+    ];
+
     return (
+      (this.state.redirect)?(
+        <Redirect push to={{
+          pathname: '/login-admin',
+        }}/>
+      ):(
+        (this.state.loaded)?(
+          <div className="App">
 
+            <Navbar user={this.state.admin} redirect={this.redirect} /> {/* Our Special imported navbar with logout functionality */}
 
-      <div className="App">
-        <Navbar bg="light" expand="lg">
-          <Navbar.Brand href="/"><img src={engsoclogo} className="nav-logo" /></Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto">
-              <Link to="/" className="Nav-text">Logout</Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-
-        <Modal show={this.state.show} onHide={this.handleCloseAdd} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Edit Hours</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="FormField">
-              <input type="text" id="hours" className="FormField__Input" placeholder="# Of Hours" name="hours" value={this.state.hours} onChange={this.handleChange} />
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleCloseAdd}>
-              Close
-            </Button>
-            <Button variant="success" onClick={this.handleCloseAdd}>
-              Add Hours
-            </Button>
-            <Button variant="danger" onClick={this.handleCloseAdd}>
-              Remove Hours
-            </Button>
-          </Modal.Footer>
-        </Modal>           
-
-       
-          <Row>
-            <Col lg={4}>
-              <div className="AppTitle" padding="30px">Hours Completed {this.state.row}</div>
-              <div className="center" padding="30px">
-                <CircularProgressbar
-                  className="circleContainerStyle"
-                  percentage='30'
-                  text='30%'
-                  styles={{
-
-                    path: { stroke: '#5a058e' },
-                    text: { fill: '#5a058e', fontSize: '16px', fontWeight: '800' },
-                  }}
-                />
-
-              </div>
-            </Col>
-            <Col lg={7}>
-            
-              <ToolkitProvider
-                keyField="id"
-                data={this.state.users}
-                columns={columns}
-                search
-              >
-                {
-                  props => (
-                    <div>
-
-                      <div class="input input--kohana">
-
-                        <SearchBar className="input__field input__field--search Search-Bar" placeholder=" " {...props.searchProps} id="input-23" />
-                        <label class="input__label input__label--search" for="input-23">
-                          <i class="fa fa-fw fa-search icon icon--search"></i>
-                          <span class="input__label-content input__label-content--search"><i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;&nbsp;Search</span>
-                        </label>
-                      </div>
-
-                      
-                      <BootstrapTable className="table-dark"pagination={paginationFactory()} rowEvents={ rowEvents }
-                        {...props.baseProps}  hover  filter={ filterFactory() }
-                      />
+            <Modal show={this.state.show} onHide={this.handleCloseAdd} centered>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Hours of {this.state.email}</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form>
+                  <div className="input input--kohana">
+                    <input className="input__field input__field--kohana" type="text" id="hours" name="hours" onChange={this.handleChange}/>
+                    <label className="input__label input__label--kohana" for="input-3">
+                      <i className="fas fa-fw fa-crown icon-c icon--kohana"></i>
+                      <span className="input__label-content input__label-content--kohana"><i className="fas fa-crown"></i>&nbsp;&nbsp;&nbsp;&nbsp;# Of Hours</span>
+                    </label>
+                  </div>
+                  <div className="checkbox-container">
+                    <div className='inline'>
+                      Hour Type: regular&nbsp;
+                      <input onClick={this.hourTypeHandler} checked={this.state.regularHours} type='checkbox' name='regularHours'/>
+                      &nbsp;or final&nbsp;
+                      <input onClick={this.hourTypeHandler} checked={this.state.finalHours} type='checkbox' name='finalHours' />
                     </div>
-                  )
-                }
-              </ToolkitProvider>
-            </Col>
+                  </div>
+                  
+                <button className="btn btn-success" checked={this.state.finalHours} type="submit" onClick={(e) => {e.preventDefault();this.handleSubmit(this)}}>
+                  Save
+                </button>
+                
+                </form>
+
+              </Modal.Body>
+              <Modal.Footer>
+                
+              </Modal.Footer>
+            </Modal>
+            <Row className="topSpaceL">
+            <Col md={1}>
+                </Col>
+                <Col md={6}>
+                <h5 >
+                Welcome to the admin panel. Please search with the input below and edit hours with the corresponding User's pencil
+
+              </h5>
+                </Col>
+              
+            </Row>
+              <Row>
+                <Col md={1}>
+                </Col>
+              <Col md={10}>
+
+                <ToolkitProvider
+                  keyField="stu_no"
+                  data={this.state.users}
+                  columns={columns}
+                  search
+                >
+                  {
+                    props => (
+                      <div>
+
+                        <SearchBar className="" placeholder=" " {...props.searchProps} id="input-23" />
 
 
-          </Row>
-
-        
-
-
-      </div>
-    );
+                        <BootstrapTable id="admin-table" pagination={paginationFactory()} rowEvents={rowEvents}
+                          {...props.baseProps} hover filter={filterFactory()}
+                        />
+                      </div>
+                    )
+                  }
+                </ToolkitProvider>
+              </Col>
+              <Col md={1}>
+                </Col>
+            </Row>
+          </div>
+        ):(
+          <div>
+                <ClipLoader
+          css={override}
+          sizeUnit={"px"}
+          size={150}
+          color={'#123abc'}
+          loading={this.state.loading}
+        />
+              </div>
+        )
+    ));
   }
 }
 

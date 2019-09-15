@@ -2,21 +2,48 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 @import url('https://use.fontawesome.com/releases/v5.8.1/css/all.css');
 
+.asfgd{
+	color: #FF0072;
+	color: #644cad;
+	color: #4426a8;
+
+}
+
 .App {
   text-align: left;
 }
 
 .center{
+	text-align: center;
+	align-items: center;
+	display:block;
+	margin: 0 auto;
+	
+}
+
+.pushLeft{
+	margin-right:2rem;
+
+}
+
+.center-manager{
+	display: block;
 	text-align:center;
 }
 
+.inline{
+	display: inline-block;
+	margin-top: 0.5em;
+}
+
 .h1, div, body {
-  font-family: 'Montserrat';
+	font-family: 'Montserrat';
+	
 }
 
 .space{
-  
-  max-height:70%;
+  width: 100%;
+  max-height: 100%;
 }
 
 .Search-Bar:focus{
@@ -25,20 +52,39 @@
 	border-radius:5px;
 }
 
+.bg-space{
+	background: url(./img/space_login.png) no-repeat center center;
+	background-size: cover;
+}
+
+.bg-gradient1{
+	background-image: linear-gradient(to bottom right,#113669, #250b41);
+
+}
+
+.bg-space-input{
+	background: url(./img/space_login_input.png) no-repeat center center;
+	background-size: cover;
+}
+.bg-space-admin{
+	background: url(./img/admin_manager_login.png) no-repeat center center;
+	background-size: cover;
+}
+
 /*SignIn Screen*/
 .input {
 	position: relative;
 	z-index: 1;
-	display: inline-block;
+	
 	margin: 1em;
-	max-width: 350px;
+	max-width: 14.5em;
 	width: calc(100% - 2em);
 	vertical-align: top;
 }
 
 .input__field {
 	position: relative;
-	display: block;
+	
 	float: right;
 	padding: 0.8em;
 	width: 60%;
@@ -58,7 +104,7 @@
 .input__label {
 	display: inline-block;
 	float: right;
-	padding: 0 1em;
+	padding: 0 0.8em;
 	width: 40%;
 	color: #696969;
 	font-weight: bold;
@@ -317,6 +363,12 @@
 	text-align: left;
 	padding-left: 4.5em;
 	pointer-events: none;
+}
+
+.checkbox-container {
+	width: 90%;
+	text-align: center;
+	margin-bottom: 1em;
 }
 
 .icon--fumi {
@@ -585,7 +637,8 @@
 }
 
 .FormCenter {
-  margin-bottom: 100px;
+	margin-bottom: 0px;
+	max-width: 100%;
   text-align:center;
 }
 
@@ -621,17 +674,60 @@
   margin:auto;
 }
 
+.topSpace{
+	margin-top: 0.5em;
+	padding-top: 0px;
+	font-family: 'Montserrat';
+}
+
+.topSpaceL{
+	margin-top: 2em;
+	padding-top: 1em;
+	font-family: 'Montserrat';
+}
+
+.white{
+	color: white !important;
+}
+
 .AppTitle {
-  margin: 50px;
+	margin-top: 1em;
+	margin-bottom: 0.4em;
   font-family: 'Montserrat';
   text-align:center;
-  font-size: 32pt;
+  font-size: 2em;
   font-weight: 600;
   color: #67198e;
 }
 
+.box{
+	background-color: #500b83;
+
+	text-align:center;
+	width: 12rem;
+	height: 12rem;
+	border-radius: 5%;
+}
+
+.box:hover{
+		box-shadow:
+                1px 1px #53a7ea,
+                2px 2px #53a7ea,
+                3px 3px #53a7ea;
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+}
+
+.loginType{
+	margin-bottom: 20px;
+	font-family: 'Montserrat';
+	text-align:center;
+	font-size: 28pt;
+  font-weight: 600;
+  color: #67198e;
+} 
 .astro{
-	padding-top:50px;
+	padding-top:0.1em;
 	color: #500b83;
 }
 
@@ -639,7 +735,7 @@
   margin: 0px;
   font-family: 'Montserrat';
   text-align:center;
-  font-size: 32pt;
+  font-size: 0.2em !important;
   font-weight: 200;
   padding: 0px;
   color: #6e6e6e;
@@ -658,14 +754,14 @@
 
 .Countdown-col-element{
   display: inline-block;
-  color: 6e6e6e;
+  color: #6e6e6e;
   margin: 0 20px;
   display: flex;
   flex-direction: column;
 }
 
 .Countdown-col-element strong{
-  font-size: 50px;
+  font-size: 2.7em;
 }
 
 
@@ -722,14 +818,14 @@
   color: #85639b;
   text-decoration: none;
   display: inline-block;
-  border-bottom: 1px solid #85639b;
-  padding-bottom: 5px;
+	padding-bottom: 5px;
+	font-size: 0.8em;
 }
 
 .FormField__Link:hover{
   color: #5a058e;
-  font-weight: 450;
-  border-bottom: 1.5px solid #5a058e;
+	font-weight: 450;
+	border: none
 }
 
 .FormField__CheckboxLabel {
@@ -804,12 +900,37 @@
   max-width:200px;
 }
 
+.width100{
+	width:100%;
+}
 
 .containerStyle {
   max-height:33%;
   max-width:33%;
   padding: 30px;
 
+}
+
+.success-message {
+  background: lightgreen;
+  border-radius: 10px;
+  padding: 10px;
+  padding-bottom: 0px;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.error-message {
+  background: lightcoral;
+  border-radius: 10px;
+  padding: 10px;
+  padding-bottom: 0px;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-top: 20px;
 }
 
 
@@ -821,3 +942,149 @@
     transform: rotate(360deg);
   }
 }
+
+@media (min-width:768px) {
+	.h-md-100 { height: 100vh; }
+}
+
+.select-input{
+	padding: 0.5em;
+}
+
+.dropbtn {
+  background-color: #644cad;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+	position: relative;
+	height: 0.5em;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #500b83;
+}
+
+.cards-list {
+  z-index: 0;
+	width: 100%;
+	
+	padding-right:2em;
+  display: inline-flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card {
+  margin: 1.5em auto;
+  width: 15em;
+  height: 15em;
+  border-radius: 2em;
+box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.08), -5px -5px 30px 7px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.card .card_image {
+  width: inherit;
+  height: inherit;
+  border-radius: 2em;
+}
+
+.card .card_image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 2em;
+  object-fit: cover;
+}
+
+.card .card_title {
+  text-align: center;
+  border-radius: 0px 0px 2em 2em;
+  
+  font-weight: bolder;
+  font-size: 2.4rem;
+  margin-top:1.5em;
+  padding-bottom: 2em;
+  height: 1em;
+}
+.card .card_title2 {
+  text-align: center;
+  border-radius: 0px 0px 2em 2em;
+  
+  font-weight: bolder;
+  font-size: 1.4rem;
+  
+  height: 1em;
+}
+
+.card:hover {
+  transform: scale(0.9, 0.9);
+  box-shadow: 5px 5px 30px 15px rgba(0,0,0,0.15), 
+    -5px -5px 30px 15px rgba(0,0,0,0.12);
+}
+
+.title-white {
+  color: white;
+}
+
+.title-black {
+  color: black;
+}
+
+@media all and (max-width: 500px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+}
+
+
+/*
+.card {
+  margin: 30px auto;
+  width: 300px;
+  height: 300px;
+  border-radius: 40px;
+  background-image: url('https://i.redd.it/b3esnz5ra34y.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-repeat: no-repeat;
+box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+  transition: 0.4s;
+}
+*/

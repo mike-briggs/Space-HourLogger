@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9cadb039.chunk.css",
+    "main.js": "/static/js/main.f13933e3.chunk.js",
+    "main.js.map": "/static/js/main.f13933e3.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.0033641b.js",
+    "runtime~main.js.map": "/static/js/runtime~main.0033641b.js.map",
+    "static/css/2.0b75b7b8.chunk.css": "/static/css/2.0b75b7b8.chunk.css",
+    "static/js/2.62f46a72.chunk.js": "/static/js/2.62f46a72.chunk.js",
+    "static/js/2.62f46a72.chunk.js.map": "/static/js/2.62f46a72.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.e6f032f77832886589c120c73e2be7cd.js": "/precache-manifest.e6f032f77832886589c120c73e2be7cd.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.0b75b7b8.chunk.css.map": "/static/css/2.0b75b7b8.chunk.css.map",
+    "static/css/main.9cadb039.chunk.css.map": "/static/css/main.9cadb039.chunk.css.map",
+    "static/media/EngSoc-Logo-Black-2.png": "/static/media/EngSoc-Logo-Black-2.7cb81397.png",
+    "static/media/engsoc-b.png": "/static/media/engsoc-b.1fb7b07d.png",
+    "static/media/engsoc-s.png": "/static/media/engsoc-s.9b5e9826.png",
+    "static/media/App.css": "/static/media/space_login.40cfa121.png",
+    "static/media/logo.svg": "/static/media/logo.5d5d9eef.svg",
+    "static/media/user2.png": "/static/media/user2.e263dec2.png"
+  }
+}

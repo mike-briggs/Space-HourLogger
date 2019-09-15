@@ -4,31 +4,46 @@ import logo from './logo.svg';
 import Login from './Login.js';
 import Manager from './Manager.js';
 import { Switch } from 'react-router';
-import { HashRouter as Router, Route, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter, Router, Route, Link, NavLink } from 'react-router-dom';
+import { createBrowserHistory } from "history";
 //import { library } from '@fortawesome/fontawesome-svg-core';
 import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
 import Admin from './Admin';
 import User from './User';
-
 import './App.css';
+
+const NoMatch = ({ location }) => (
+  <div>
+    <h3 className="AppTitle">404 Page Not Found</h3>
+    <div className="center">
+    <Link className="" to="/">Go Home</Link>
+    </div>
+    
+  </div>
+);
+
+const hist = createBrowserHistory();
+
+
 class App extends Component {
 
   render() {
-    return (
-      <Router>
-        <div>
-          <Route exact path="" component={SignInForm}>
-          </Route>
-          <Route path="/sign-up" component={SignUpForm}>
-          </Route>
-          <Route path="/manager" component={Manager}>
-          </Route>
-          <Route path="/user" component={User}>
-          </Route>
-          <Route path="/admin" component={Admin}>
-          </Route>
 
+    return (
+      <Router history={hist}>
+        <div>
+          <Switch>
+            <Route exact path="/" render={() => <SignInForm type={2}/>} />
+            <Route path="/sign-up" component={SignUpForm} />
+            <Route path="/manager" component={Manager} />
+            <Route path="/login-manager" render={() => <SignInForm type={1}/>} />
+            <Route path="/user" component={User} />
+            <Route path="/admin" component={Admin} />
+            <Route path="/login-admin" render={() => <SignInForm type={0}/>} />
+            <Route component={NoMatch} />
+          </Switch>
+          {/*<Route render={() => <Redirect to="/404" />} /> */}
         </div>
 
 
